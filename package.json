@@ -1,13 +1,17 @@
 {
   "name": "xjsx",
+  "author": "erik <erik@codekraft.it>",
   "version": "0.0.1",
-  "types": "src/index.d.ts",
+  "types": "esm/index.d.ts",
   "scripts": {
     "dev": "tsc --watch",
-    "build": "tsc",
+    "build": "rollup -c",
+    "build-tsc": "tsc",
+    "build-types": "tsc --emitDeclarationOnly --declaration --outDir ./esm",
     "prepublishOnly": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "type": "module",
   "exports": {
     ".": "./src/index.js",
     "./jsx-dev-runtime": "./src/jsx-runtime.js",
@@ -20,6 +24,7 @@
   "devDependencies": {
     "@babel/core": "^7.24.0",
     "@babel/preset-typescript": "^7.23.3",
+    "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-typescript": "^11.1.6",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "eslint": "^8.57.0",
@@ -32,6 +37,7 @@
     "hyper-dom-expressions": "0.34.12",
     "lit-dom-expressions": "^0.37.17",
     "ncp": "^2.0.0",
+    "rollup": "^4.12.1",
     "prettier": "^3.2.5",
     "typescript": "^5.4.2"
   }

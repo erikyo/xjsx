@@ -1,4 +1,12 @@
-import { useEffect } from './xjsx';
+import { useEffect } from "./xjsx";
+export * from "./jsx";
+/**
+ * Appends a child to a parent node, or updates the content of an existing child node.
+ *
+ * @param {Node} parent - the parent node to which the child will be appended
+ * @param {Node|string} child - the child node or string content to be appended
+ * @param {number} [j=0] - the index at which the child should be appended
+ */
 const appendChild = (parent, child, j = 0) => {
     if (Array.isArray(child)) {
         child.forEach((nestedChild, i) => appendChild(parent, nestedChild, i));
@@ -12,18 +20,28 @@ const appendChild = (parent, child, j = 0) => {
         }
     }
 };
+/**
+ * Takes a component and returns an element
+ * @param tag
+ * @param props
+ */
 export const jsx = (tag, props) => {
     const { children } = props;
     if (typeof tag === 'function')
         return tag(props);
+    /**
+     * svg
+     */
+    if (tag === 'svg') {
+        return document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    }
     const element = document.createElement(tag);
     Object.entries(props || {}).forEach(([name, value]) => {
         if (name.startsWith('on') && name.toLowerCase() in window)
-            element.addEventListener(name.toLowerCase().substr(2), value);
+            element.addEventListener(name.toLowerCase().substring(2), value);
         else
             element.setAttribute(name, value);
     });
-    // appendChild(element, children);
     useEffect(() => {
         const list = Array.isArray(children) ? children : [children];
         const res = list.map((child) => {
@@ -49,6 +67,9 @@ export const hydrate = (element, container) => {
 };
 export const hydrateRoot = (container, element) => {
     hydrate(element, container);
+};
+export const createPortal = (element, container) => {
+    container.appendChild(element);
 };
 export const isValidElement = (element) => {
     return element && typeof element === 'object' && 'type' in element;

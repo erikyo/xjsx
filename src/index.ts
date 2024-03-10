@@ -1,5 +1,4 @@
 export * from "./xjsx";
 export * from "./jsx-runtime";
-export * from "./";
+export * from "./jsx";
 
-export type { JSX } from "./jsx"

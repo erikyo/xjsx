@@ -8,6 +8,7 @@
     /** XJSX compiler options */
     "jsx": "react-jsx",
     "declaration": true,
+    "pretty": false,
     "skipLibCheck": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
