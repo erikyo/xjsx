@@ -1,20 +1,21 @@
 {
   "name": "xjsx",
   "version": "0.0.1",
-  "module": "src/index.js",
-  "main": "src/index.js",
-  "types": "index.d.ts",
+  "types": "src/index.d.ts",
   "scripts": {
     "dev": "tsc --watch",
     "build": "tsc",
     "prepublishOnly": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "exports": {
+    ".": "./src/index.js",
+    "./jsx-dev-runtime": "./src/jsx-dev-runtime.js",
+    "./jsx-runtime": "./src/jsx-runtime.js"
+  },
   "dependencies": {
     "cssstyle": "^4.0.1",
-    "csstype": "^3.1.0",
-    "dom-expressions": "^0.37.17",
-    "rx-core": "^4.0.8"
+    "csstype": "^3.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
