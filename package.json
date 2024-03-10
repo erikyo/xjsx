@@ -10,7 +10,7 @@
   },
   "exports": {
     ".": "./src/index.js",
-    "./jsx-dev-runtime": "./src/jsx-dev-runtime.js",
+    "./jsx-dev-runtime": "./src/jsx-runtime.js",
     "./jsx-runtime": "./src/jsx-runtime.js"
   },
   "dependencies": {
