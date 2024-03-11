@@ -4,11 +4,10 @@
   "version": "0.0.1",
   "types": "esm/index.d.ts",
   "scripts": {
-    "dev": "tsc --watch",
-    "build": "npm-run-all build:scripts build:esm-types build:cjs-types",
+    "dev": "tsc --outDir ./esm --watch",
+    "build": "npm-run-all build:scripts build:esm-types",
     "build:scripts": "rollup -c",
     "build:esm-types": "tsc --emitDeclarationOnly --declaration --outDir ./esm",
-    "build:cjs-types": "tsc --emitDeclarationOnly --declaration --outDir ./cjs",
     "prepublishOnly": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

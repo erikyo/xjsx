@@ -11,7 +11,7 @@ const plugins = [
     declarationDir: '.',
     sourceMap: false
   }),
-  gzipPlugin(),
+  //gzipPlugin(),
   terser({
     compress: {
       defaults: false,
@@ -27,16 +27,13 @@ const plugins = [
       comments: false,
       ecma: '2020'
     }
-  })
+  }),
+  gzipPlugin(),
 ];
 
 export default [{
   input: 'src/index.ts',
   output: [{
-    format: 'cjs',
-    file: 'cjs/index.js',
-    plugins
-  }, {
     format: 'es',
     file: 'esm/index.js',
     compress: true,

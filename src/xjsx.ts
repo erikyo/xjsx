@@ -1,5 +1,4 @@
-
-let targetFunc;
+let targetFunc: Function | null;
 
 /**
  * Observer class for xjsx
@@ -20,9 +19,9 @@ class Observer {
 /**
  * Helper functions
  */
-const isFunction = (target) => typeof target === 'function';
-const isObject = (target) => typeof target === 'object' && target !== null;
-const clone = (acc, target) => {
+const isFunction = (target: any) => typeof target === 'function';
+const isObject = (target: any) => typeof target === 'object' && target !== null;
+const clone = (acc: { [x: string]: any; }, target: { [x: string]: any; }) => {
     if (isObject(acc)) {
         Object.keys(acc).forEach((key) => {
             if (isObject(acc[key])) target[key] = clone(acc[key], target[key]);
@@ -47,7 +46,7 @@ const setter = (prx, dep) => (data) => {
 /**
  * @param dep
  */
-const createOptions = (dep) => ({
+const createOptions: (dep: any) => { get(target: any, key: any): (any) } = (dep: any) => ({
     get(target, key) {
         dep.add();
         if (isObject(target[key]))
@@ -64,7 +63,7 @@ const createOptions = (dep) => ({
  * @param {any} data - the initial value of the state variable
  * @return {Array<Function>} an array containing the getter and setter functions
  */
-export const useState = (data) => {
+export const useState = (data: any): Array<Function> => {
     const dep = new Observer();
     const prx = new Proxy({ data }, createOptions(dep));
     return [() => prx.data, setter(prx, dep)];
@@ -76,8 +75,16 @@ export const useState = (data) => {
  * @param {function} fn - The function to be executed
  * @return {void}
  */
-export const useEffect = (fn) => {
+export const useEffect = (fn: Function): void => {
     targetFunc = fn;
     targetFunc();
     targetFunc = null;
 };
+
+export const useCallback = (fn: Function): Function => {
+    return fn;
+};
+
+export const useRef = (data: any): { current: any } => {
+    return { current: data };
+}
