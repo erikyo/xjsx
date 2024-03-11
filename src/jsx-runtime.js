@@ -13,7 +13,7 @@ const appendChild = (parent, child, j = 0) => {
     }
     else {
         if (!parent.childNodes[j]) {
-            parent.appendChild(child.nodeType ? child : document.createTextNode(child));
+            parent.appendChild(child?.nodeType ? child : document.createTextNode(child));
         }
         else if (child !== parent.childNodes[j].data) {
             parent.childNodes[j].data = child;
@@ -37,6 +37,11 @@ export const jsx = (tag, props) => {
     }
     const element = document.createElement(tag);
     Object.entries(props || {}).forEach(([name, value]) => {
+        if (children) {
+            for (let i = 0; i < element.children.length; i++) {
+                appendChild(element, value, i);
+            }
+        }
         if (name.startsWith('on') && name.toLowerCase() in window)
             element.addEventListener(name.toLowerCase().substring(2), value);
         else
@@ -54,6 +59,9 @@ export const jsx = (tag, props) => {
 };
 export const Fragment = (props) => props.children;
 export const createElement = (tag, props, ...children) => {
+    return jsx(tag, { ...props, children });
+};
+export const createSvgElement = (tag, props, ...children) => {
     return jsx(tag, { ...props, children });
 };
 export const cloneElement = (element, props, ...children) => {

@@ -16,6 +16,8 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "allowSyntheticDefaultImports": true,
+    "sourceMap": false,
+    "inlineSourceMap": false,
   },
   "include": [
     "src/"

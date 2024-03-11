@@ -1,21 +1,22 @@
 {
-  "name": "xjsx",
+  "name": "x-jsx",
   "author": "erik <erik@codekraft.it>",
   "version": "0.0.1",
   "types": "esm/index.d.ts",
   "scripts": {
     "dev": "tsc --watch",
-    "build": "rollup -c",
-    "build-tsc": "tsc",
-    "build-types": "tsc --emitDeclarationOnly --declaration --outDir ./esm",
+    "build": "npm-run-all build:scripts build:esm-types build:cjs-types",
+    "build:scripts": "rollup -c",
+    "build:esm-types": "tsc --emitDeclarationOnly --declaration --outDir ./esm",
+    "build:cjs-types": "tsc --emitDeclarationOnly --declaration --outDir ./cjs",
     "prepublishOnly": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "type": "module",
   "exports": {
-    ".": "./src/index.js",
-    "./jsx-dev-runtime": "./src/jsx-runtime.js",
-    "./jsx-runtime": "./src/jsx-runtime.js"
+    ".": "./esm/index.js",
+    "./jsx-dev-runtime": "./esm/index.js",
+    "./jsx-runtime": "./esm/index.js"
   },
   "dependencies": {
     "cssstyle": "^4.0.1",
@@ -25,6 +26,7 @@
     "@babel/core": "^7.24.0",
     "@babel/preset-typescript": "^7.23.3",
     "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "eslint": "^8.57.0",
@@ -37,8 +39,9 @@
     "hyper-dom-expressions": "0.34.12",
     "lit-dom-expressions": "^0.37.17",
     "ncp": "^2.0.0",
-    "rollup": "^4.12.1",
+    "npm-run-all": "^4.1.5",
     "prettier": "^3.2.5",
+    "rollup": "^4.12.1",
     "typescript": "^5.4.2"
   }
 }
