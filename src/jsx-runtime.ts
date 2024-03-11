@@ -1,7 +1,5 @@
 import {useEffect} from "./xjsx";
 
-export * from "./jsx";
-
 /**
  * Appends a child to a parent node, or updates the content of an existing child node.
  *
@@ -9,14 +7,14 @@ export * from "./jsx";
  * @param {Node|string} child - the child node or string content to be appended
  * @param {number} [index=0] - the index at which the child should be appended
  */
-const appendChild = (parent, child, index = 0) => {
+const appendChild = (parent: SVGSVGElement | HTMLElement, child: string | Node, index: number = 0) => {
+    if (child === undefined) return;
     if (Array.isArray(child)) {
         child.forEach((nestedChild, i) => appendChild(parent, nestedChild, i));
     } else {
         if (!parent.childNodes[index]) {
-
             parent.appendChild(
-                child?.nodeType ? child : document.createTextNode(child)
+                typeof child !== 'string' && child?.nodeType ? child : document.createTextNode(child)
             );
         } else if (child !== parent.childNodes[index].data) {
             parent.childNodes[index].data = child;
@@ -29,26 +27,26 @@ const appendChild = (parent, child, index = 0) => {
  * @param tag
  * @param props
  */
-export const jsx = (tag, props) => {
+export const jsx = (tag: string | ((arg0: any) => any), props: { children: any; }) => {
 
     const { children } = props;
     if (typeof tag === 'function') return tag(props);
 
-    const element = tag === 'svg' ? document.createElementNS( 'http://www.w3.org/2000/svg', tag) : document.createElement(tag)
+    const element = tag === 'svg'
+        ? document.createElementNS( 'http://www.w3.org/2000/svg', tag)
+        : document.createElement(tag)
 
     Object.entries(props || {}).forEach(([name, value]) => {
-
-        if ( children ) {
+        if (name.startsWith('on') && name.toLowerCase() in window)
+            element.addEventListener(name.toLowerCase().substring(2), value);
+        else if (name === 'children')
             for (let i = 0; i < element.children.length; i++) {
                 appendChild(element, value, i);
             }
-        }
-        if (name.startsWith('on') && name.toLowerCase() in window)
-            element.addEventListener(name.toLowerCase().substring(2), value);
         else if (name.startsWith('data-'))
             element.setAttribute(name, value);
-        else if (name === 'children') return;
-        else element.setAttribute(name, value);
+        else
+            element.setAttribute(name, value);
     });
 
     useEffect(() => {
@@ -62,11 +60,12 @@ export const jsx = (tag, props) => {
     return element;
 };
 
-export type JSX = typeof jsx;
-
+/** export jsx runtime for development */
 export const jsxDEV = jsx
 
-export const Fragment = (props) => props.children;
+export function Fragment(props: { children: JSX.Element }) {
+    return props.children;
+}
 
 export const render = (element, container) => {
     container.appendChild(element);
@@ -75,7 +74,3 @@ export const render = (element, container) => {
 export const hydrate = (element, container) => {
     render(element, container);
 }
-
-export const jsxs = (tag, props) => jsx(tag, props);
-
-export const jsxsDEV = jsxs

@@ -5,22 +5,21 @@
     "lib": ["es2021", "DOM", "DOM.Iterable"],
     "strict": false,
     "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+
     /** XJSX compiler options */
     "jsx": "react-jsx",
+
+    "rootDir": "src",
+    "outDir": "lib",
     "declaration": true,
+    "emitDeclarationOnly": true,
+
     "pretty": false,
-    "skipLibCheck": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
     "allowSyntheticDefaultImports": true,
-    "sourceMap": false,
-    "inlineSourceMap": false,
   },
   "include": [
     "src/"
-  ],
-  "exclude": ["node_modules/**"]
+  ]
 }
