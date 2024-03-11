@@ -1,17 +1,19 @@
+![jsx](https://github.com/erikyo/xjsx/assets/8550908/896efa3c-92ed-4e8c-9a5e-01de98d5aead)
 
+# Settings
+
+Vite configuration
 
 ```json
-
-// https://vitejs.dev/config/
 export default defineConfig({
   esbuild: {
     jsx: 'automatic',
     jsxImportSource: 'xjsx'
   }
 })
-
 ```
 
+#### Test 
 
 ```ts
 import { useState, useEffect } from 'xjsx';
