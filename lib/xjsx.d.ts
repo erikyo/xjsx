@@ -17,3 +17,4 @@ export declare const useCallback: (fn: Function) => Function;
 export declare const useRef: (data: any) => {
     current: any;
 };
+//# sourceMappingURL=xjsx.d.ts.map

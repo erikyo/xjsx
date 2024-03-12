@@ -6,12 +6,24 @@ import type * as csstype from 'csstype';
  * https://github.com/infernojs/inferno/blob/master/packages/inferno/src/core/types.ts
  */
 type DOMElement = Element;
+export type FragmentType = {
+    __UniqueFragmentIdentifierDontTouchPlz__: true;
+};
+export declare const Fragment: FragmentType;
 export declare namespace JSX {
-    export type Element = Node | ArrayElement | FunctionElement | (string & {}) | number | boolean | null | undefined;
+    type Element = JSElement | IntrinsicElements | Node | ArrayElement | FunctionElement | string | any | FragmentType;
     interface ArrayElement extends Array<Element> {
     }
     interface FunctionElement {
         (): Element;
+    }
+    interface JSElement extends HTMLAttributes<HTMLElement | JSX.IntrinsicElements> {
+        children?: Element;
+        innerHTML?: string;
+        innerText?: string | number;
+        textContent?: string | number;
+        value?: string | number;
+        on?: CustomEvents;
     }
     interface EventHandler<T, E extends Event> {
         (e: E & {
@@ -26,7 +38,7 @@ export declare namespace JSX {
         }) => void;
         1: any;
     }
-    export type EventHandlerUnion<T, E extends Event> = EventHandler<T, E> | BoundEventHandler<T, E>;
+    type EventHandlerUnion<T, E extends Event> = EventHandler<T, E> | BoundEventHandler<T, E>;
     interface CustomAttributes<T> {
         ref?: T | ((el: T) => void);
         classList?: {
@@ -34,7 +46,7 @@ export declare namespace JSX {
         };
         $ServerOnly?: boolean;
     }
-    export type Accessor<T> = () => T;
+    type Accessor<T> = () => T;
     interface Directives {
     }
     interface DirectiveFunctions {
@@ -48,7 +60,7 @@ export declare namespace JSX {
     }
     interface CustomCaptureEvents {
     }
-    export type DirectiveAttributes = {
+    type DirectiveAttributes = {
         [Key in keyof Directives as `use:${Key}`]?: Directives[Key];
     };
     type DirectiveFunctionAttributes<T> = {
@@ -172,9 +184,6 @@ export declare namespace JSX {
         oninput?: EventHandlerUnion<T, InputEvent>;
         onbeforeinput?: EventHandlerUnion<T, InputEvent>;
         onreset?: EventHandlerUnion<T, Event>;
-        onsubmit?: EventHandlerUnion<T, Event & {
-            submitter: HTMLElement;
-        }>;
         onload?: EventHandlerUnion<T, Event>;
         onerror?: EventHandlerUnion<T, Event>;
         onkeydown?: EventHandlerUnion<T, KeyboardEvent>;
@@ -441,6 +450,11 @@ export declare namespace JSX {
         "aria-valuetext"?: string;
         role?: "alert" | "alertdialog" | "application" | "article" | "banner" | "button" | "cell" | "checkbox" | "columnheader" | "combobox" | "complementary" | "contentinfo" | "definition" | "dialog" | "directory" | "document" | "feed" | "figure" | "form" | "grid" | "gridcell" | "group" | "heading" | "img" | "link" | "list" | "listbox" | "listitem" | "log" | "main" | "marquee" | "math" | "menu" | "menubar" | "menuitem" | "menuitemcheckbox" | "menuitemradio" | "meter" | "navigation" | "none" | "note" | "option" | "presentation" | "progressbar" | "radio" | "radiogroup" | "region" | "row" | "rowgroup" | "rowheader" | "scrollbar" | "search" | "searchbox" | "separator" | "slider" | "spinbutton" | "status" | "switch" | "tab" | "table" | "tablist" | "tabpanel" | "term" | "textbox" | "timer" | "toolbar" | "tooltip" | "tree" | "treegrid" | "treeitem";
     }
+    type ClassKeys = `class:${string}`;
+    type CSSKeys = Exclude<keyof csstype.PropertiesHyphen, `-${string}`>;
+    type CSSAttributes = {
+        [key in CSSKeys as `style:${key}`]: csstype.PropertiesHyphen[key];
+    };
     interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
         accessKey?: string;
         class?: string;
@@ -1290,7 +1304,8 @@ export declare namespace JSX {
     interface ViewSVGAttributes<T> extends CoreSVGAttributes<T>, ExternalResourceSVGAttributes, FitToViewBoxSVGAttributes, ZoomAndPanSVGAttributes {
         viewTarget?: string;
     }
-    export type IntrinsicElements = {
+    type SVGAttributes = SvgSVGAttributes<SVGElement>;
+    interface IntrinsicElements {
         a: AnchorHTMLAttributes<HTMLAnchorElement>;
         abbr: HTMLAttributes<HTMLElement>;
         address: HTMLAttributes<HTMLElement>;
@@ -1462,7 +1477,7 @@ export declare namespace JSX {
         tspan: TSpanSVGAttributes<SVGTSpanElement>;
         use: UseSVGAttributes<SVGUseElement>;
         view: ViewSVGAttributes<SVGViewElement>;
-    };
-    export {};
+    }
 }
 export {};
+//# sourceMappingURL=jsx.d.ts.map

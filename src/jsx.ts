@@ -8,29 +8,33 @@ import type * as csstype from 'csstype';
  */
 type DOMElement = Element;
 
-export namespace JSX {
+export type FragmentType = {
+    __UniqueFragmentIdentifierDontTouchPlz__: true
+}
+export declare const Fragment: FragmentType;
+
+export declare namespace JSX {
     export type Element =
+        | JSElement
+        | IntrinsicElements
         | Node
         | ArrayElement
         | FunctionElement
-        | (string & {})
-        | number
-        | boolean
-        | null
-        | undefined;
+        | string
+        | any
+        | FragmentType;
 
     interface ArrayElement extends Array<Element> {}
     interface FunctionElement {
         (): Element;
     }
-    interface ElementClass {
-        // empty, libs can define requirements downstream
-    }
-    interface ElementAttributesProperty {
-        // empty, libs can define requirements downstream
-    }
-    interface ElementChildrenAttribute {
-        children: {};
+    interface JSElement extends HTMLAttributes<HTMLElement | JSX.IntrinsicElements> {
+        children?: Element;
+        innerHTML?: string;
+        innerText?: string | number;
+        textContent?: string | number;
+        value?: string | number;
+        on?: CustomEvents
     }
     interface EventHandler<T, E extends Event> {
         (
@@ -51,9 +55,6 @@ export namespace JSX {
         1: any;
     }
     export type EventHandlerUnion<T, E extends Event> = EventHandler<T, E> | BoundEventHandler<T, E>;
-    interface IntrinsicAttributes {
-        ref?: unknown | ((e: unknown) => void);
-    }
     interface CustomAttributes<T> {
         ref?: T | ((el: T) => void);
         classList?: {
@@ -209,12 +210,6 @@ export namespace JSX {
         oninput?: EventHandlerUnion<T, InputEvent>;
         onbeforeinput?: EventHandlerUnion<T, InputEvent>;
         onreset?: EventHandlerUnion<T, Event>;
-        onsubmit?: EventHandlerUnion<
-            T,
-            Event & {
-            submitter: HTMLElement;
-        }
-        >;
         onload?: EventHandlerUnion<T, Event>;
         onerror?: EventHandlerUnion<T, Event>;
         onkeydown?: EventHandlerUnion<T, KeyboardEvent>;
@@ -601,14 +596,12 @@ export namespace JSX {
             | "treeitem";
     }
 
-    // TODO: Should we allow this?
     type ClassKeys = `class:${string}`;
     type CSSKeys = Exclude<keyof csstype.PropertiesHyphen, `-${string}`>;
 
     type CSSAttributes = {
        [key in CSSKeys as `style:${key}`]: csstype.PropertiesHyphen[key];
     };
-
     interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
         // [key: ClassKeys]: boolean;
         accessKey?: string;
@@ -1835,7 +1828,8 @@ export namespace JSX {
             ZoomAndPanSVGAttributes {
         viewTarget?: string;
     }
-    export type IntrinsicElements = {
+    export type SVGAttributes = SvgSVGAttributes<SVGElement>;
+    interface IntrinsicElements {
         a: AnchorHTMLAttributes<HTMLAnchorElement>;
         abbr: HTMLAttributes<HTMLElement>;
         address: HTMLAttributes<HTMLElement>;

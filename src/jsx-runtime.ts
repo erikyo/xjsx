@@ -7,7 +7,7 @@ import {useEffect} from "./xjsx";
  * @param {Node|string} child - the child node or string content to be appended
  * @param {number} [index=0] - the index at which the child should be appended
  */
-const appendChild = (parent: SVGSVGElement | HTMLElement, child: string | Node, index: number = 0) => {
+const appendChild = (parent: SVGSVGElement | HTMLElement, child: string | Node | Node[], index: number = 0) => {
     if (child === undefined) return;
     if (Array.isArray(child)) {
         child.forEach((nestedChild, i) => appendChild(parent, nestedChild, i));
@@ -27,9 +27,12 @@ const appendChild = (parent: SVGSVGElement | HTMLElement, child: string | Node, 
  * @param tag
  * @param props
  */
-export const jsx = (tag: string | ((arg0: any) => any), props: { children: any; }) => {
+export const createElement = (tag: string | ((arg0: any) => any), props: { children: any; }) => {
 
     const { children } = props;
+
+    if (tag === Fragment) return children
+
     if (typeof tag === 'function') return tag(props);
 
     const element = tag === 'svg'
@@ -39,19 +42,13 @@ export const jsx = (tag: string | ((arg0: any) => any), props: { children: any; 
     Object.entries(props || {}).forEach(([name, value]) => {
         if (name.startsWith('on') && name.toLowerCase() in window)
             element.addEventListener(name.toLowerCase().substring(2), value);
-        else if (name === 'children')
-            for (let i = 0; i < element.children.length; i++) {
-                appendChild(element, value, i);
-            }
-        else if (name.startsWith('data-'))
-            element.setAttribute(name, value);
         else
             element.setAttribute(name, value);
     });
 
     useEffect(() => {
         const list = Array.isArray(children) ? children : [children];
-        const res = list.map((child) => {
+        const res  = list.map((child) => {
             return typeof child === 'function' ? child() : child;
         });
         appendChild(element, res);
@@ -60,8 +57,7 @@ export const jsx = (tag: string | ((arg0: any) => any), props: { children: any; 
     return element;
 };
 
-/** export jsx runtime for development */
-export const jsxDEV = jsx
+export const jsx = (tag, { children, ...attributes }) => createElement(tag, { children, ...attributes });
 
 export function Fragment(props: { children: JSX.Element }) {
     return props.children;

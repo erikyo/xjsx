@@ -5,8 +5,8 @@
   "type": "module",
   "exports": {
     ".": "./lib/index.js",
-    "./jsx-dev-runtime": "./lib/jsx-runtime.js",
-    "./jsx-runtime": "./lib/jsx-runtime.js"
+    "./jsx-dev-runtime": "./lib/index.js",
+    "./jsx-runtime": "./lib/index.js"
   },
   "types": "lib/index.d.ts",
   "scripts": {

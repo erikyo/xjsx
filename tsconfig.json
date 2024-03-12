@@ -11,10 +11,12 @@
     /** XJSX compiler options */
     "jsx": "react-jsx",
 
+    "sourceMap": true,
     "rootDir": "src",
     "outDir": "lib",
     "declaration": true,
     "emitDeclarationOnly": true,
+    "declarationMap": true,
 
     "pretty": false,
     "allowSyntheticDefaultImports": true,

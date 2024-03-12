@@ -11,7 +11,7 @@ export const devOptions = {
     format: "esm",
     bundle: true,
     minify: true,
-    entryPoints: ["src/index.ts", "src/jsx-runtime.ts"],
+    entryPoints: ["src/index.ts"],
     outdir: "./lib/"
 }
 
